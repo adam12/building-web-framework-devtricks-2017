@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Building a Web Framework | Adam Daniels</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      textarea { display: none; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Building a Web Framework
+
+---
+
+class: center, middle
+
+# Introduction
+
+???
+
+- For those of you that don't know me
+  - Adam Daniels
+  - Work professionally as software consultant
+  - One of the organizers of Software Niagara
+
+- Working with Ruby and Rails since 2005
+- Before Rails, PHP
+- Before PHP, Perl
+- Before Perl, C
+
+- DISCLAIMER: This talk will be heavily Ruby centric as it's what I am familiar with.
+
+---
+
+# What is a Web Framework?
+
+Curated set of components that operate well together.
+
+Feature-complete out of the box.
+
+Productivity-inducing.
+
+???
+
+- Basis of web framework
+  - A lot of decisions removed from your control
+
+---
+
+# Web Framework History
+
+* ColdFusion ~ 1995
+* ASP ~ 1998
+* Struts ~ 1999
+* Drupal ~ 2001
+* HTML::Mason ~ 2001
+* ASP.NET ~ 2002
+* Ruby on Rails ~ 2004
+* Django ~ 2005
+
+???
+
+- First recognized web framework was ColdFusion in 1995.
+
+- Drupal is listed here but hugs the boundary of not being a web framework.
+
+- Ruby on Rails changed the game for many.
+
+
+---
+
+# When to use a pre-made Framework
+
+* Quick team onboarding
+* Easier hiring
+* Quicker time to market *sometimes*
+* Problems solved for you
+* Less experienced team
+
+---
+
+# When to build your own Framework
+
+* Comfortable with web development
+* A desire to better understand pieces
+* Swappable components
+* Control your destiny
+* Only the pieces you need, nothing you don't
+
+---
+
+.center[![](choose.png)]
+
+???
+
+Very much like a choose your own adventure.
+
+Wrong component might cause some grief.
+
+You generally won't die at the end of this adventure.
+
+---
+
+# Picking your components
+
+* Choose small, modular components
+* Look at repository to determine "life" of project
+  * Lots of open issues? Avoid
+  * Maintainer not active on issue tracker? Avoid
+  * Not comfortable owning project one day? Avoid
+* License matches your project
+* Build adapters for components you're not sure of
+
+
+???
+
+What I want you to consider when choosing your own adventure.
+
+---
+
+class: center, middle
+
+# My Web Framework
+
+???
+
+I've already completed this adventure. Here's my framework for most projects.
+
+---
+
+# Roda
+
+* Core of our framework
+* Routing (Controller) Layer
+* Ships with many *optional* features
+
+
+```ruby
+require "roda"
+
+class App < Roda
+  route do |r|
+    r.root do
+      "Hello World"
+    end
+  end
+end
+```
+
+---
+
+# Sequel
+
+* Database adapter
+* Model Layer
+* Ships with many *optional* features
+
+
+```ruby
+require "sequel"
+
+DB = Sequel.connect(ENV["DATABASE_URL"])
+
+class Post < Sequel::Model
+end
+
+@posts = Post.all
+@post = Post.create(title: "The Blogpost Title")
+```
+
+---
+
+# Erubi
+
+* Rendering of Markup
+* View Layer
+* Fast and familiar to most
+* Advanced features (capture tags)
+
+
+```ruby
+require "roda"
+
+class App < Roda
+  plugin :render, escape: :erubi
+
+  route do |r|
+    r.root do
+      render(:index)
+    end
+  end
+end
+```
+
+---
+
+# Forme
+
+* Rendering of form elements
+* Applying of validation properties to inputs (red border for error, etc)
+
+
+```eruby
+<%|= form(@model_object) do |f| %>
+  <%== f.input :title %>
+  <%== f.button value: "Save" %>
+<%| end %>
+```
+---
+
+# Your own toolbox
+
+* blankman (https://github.com/adam12/blankman)
+* friendly_numbers (https://github.com/adam12/friendly_numbers)
+* roda-unpoly (https://github.com/adam12/roda-unpoly)
+* roda-mailer_ext (https://github.com/adam12/roda-mailer_ext)
+* roda-mailer_preview (https://github.com/adam12/roda-mailer_preview)
+
+---
+
+class: center, middle
+
+# Thank you
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
